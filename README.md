@@ -1,4 +1,4 @@
-# subject-set-util
+# panoptes-subject-set-util
 A command line utility to manage Zooniverse (Panoptes) subject sets.
 
 ## Description
