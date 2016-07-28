@@ -3,8 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "author": "",
-  "license": "ISC",
+  "author": "Sascha T. Ishikawa",
+  "license": "Apache 2.0",
+  "bin": {
+    "ssutil": "index.js"
+  },
   "dependencies": {
     "async": "^1.5.2",
     "cli-table": "^0.3.1",

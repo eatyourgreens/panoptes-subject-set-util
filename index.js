@@ -1,11 +1,4 @@
-/*******************************************************************************
- *  DESCRIPTION: Enables fetching sequential subjects from Panoptes API by
- *  creating a linked-list in an existing subject set. The user must 1) have a
- *  Zooniverse acount; 2) permissions (either as an owner or collaborator) to a
- *  Zooniverse project, and 3) an existing subject set linked to the project.
- *******************************************************************************/
-
-
+#! /usr/bin/env node
 'use strict';
 const api    = require('panoptes-client');
 const auth   = require('panoptes-client/lib/auth');
