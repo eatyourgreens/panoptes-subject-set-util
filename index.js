@@ -1,6 +1,11 @@
 #! /usr/bin/env node
 'use strict';
 
+// command modules
+const list           = require('./lib/list');
+const linkSubjects   = require('./lib/link-subjects');
+const updateMetadata = require('./lib/update-metadata');
+
 const argv   = require('yargs')
   .usage('Usage: $0 <command> [options]')
   .demand(1)
@@ -14,9 +19,9 @@ const argv   = require('yargs')
     default: false,
     type: 'boolean'
   })
-  .command( require('./list') )
-  .command( require('./link-subjects') )
-  .command( require('./update-metadata') )
+  .command(list)
+  .command(linkSubjects)
+  .command(updateMetadata)
   .global('env')
   .strict()
   .epilogue('Copyright 2016 Zooniverse')
