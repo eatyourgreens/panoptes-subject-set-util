@@ -30,9 +30,9 @@ const argv   = require('yargs')
         })
         .help()
     })
-  .command('link-pages', 'Creates a linked list among subjects in a set to support sequential pages', function (yargs) {
+  .command('link-subjects', 'Creates a linked list among subjects in a set to support sequential pages', function (yargs) {
       return yargs
-        .usage('Usage: $0 link-pages --project [project_id] --subject-set [subject_set_id]')
+        .usage('Usage: $0 link-subjects --project [project_id] --subject-set [subject_set_id]')
         .option('project', {
           alias: 'p',
           demand: true,
@@ -55,39 +55,7 @@ const argv   = require('yargs')
           type: 'boolean'
         })
     })
-  .command('update-status', 'Updates subject set status', function (yargs) {
-      return yargs
-      .usage('Usage: $0 update-status --project [project_id] --subject-set [subject_set_id] --active [active_status] --shortName [ship_name]')
-      .option('project', {
-        alias: 'p',
-        demand: true,
-        describe: 'Project ID',
-        type: 'integer'
-      })
-      .option('subject-set', {
-        alias: 's',
-        demand: true,
-        describe: 'Subject set ID',
-        type: 'integer'
-      })
-      .option('active', {
-        demand: true,
-        describe: 'Updates subject set "active" property; "false" will take the subject set offline',
-      })
-      .option('short-name', {
-        demand: true,
-        describe: 'Updates subject set "shortName" property',
-        type: 'string'
-      })
-      .implies('active', 'short-name')
-      .implies('short-name', 'active')
-      .check( function(argv) {
-        if (typeof argv.shortName == 'boolean') {
-          throw 'Option "shortName" must have a string value';
-        }
-        return true;
-      })
-    })
+  .command( require('./update-metadata') )
   .global('env')
   .strict()
   .epilogue('Copyright 2016 Zooniverse')
@@ -138,12 +106,12 @@ prompt.get({
         list();
         break;
       /* Create linked list among subjects in subject set */
-      case 'link-pages':
-        linkPages();
+      case 'link-subjects':
+        linkSubjects();
         break;
       /* Update subject set status */
-      case 'update-status':
-        updateStatus();
+      case 'update-metadata':
+        updateMetadata();
         break;
 
       default:
@@ -175,15 +143,7 @@ function list() {
   });
 }
 
-function updateStatus() {
-  let shortName = argv.shortName ? argv.shortName :  '';
-  api.type('subject_sets').get({id: argv.subjectSet}).update({metadata:{active: argv.active, shortName: shortName}}).save()
-    .catch( function(err) {
-      console.log('ERROR: ', err);
-    })
-}
-
-function linkPages() {
+function linkSubjects() {
   getAllSubjectsInSet(argv.subjectSet).then( function(subjects) {
     let updatedSubjects = addNextLinksToSubjectSet(subjects);
     if( updatedSubjects.length == 0 ) {

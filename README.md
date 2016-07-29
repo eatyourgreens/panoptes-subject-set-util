@@ -1,6 +1,9 @@
 # panoptes-subject-set-util
 A command line utility to manage Zooniverse (Panoptes) subject sets.
 
+## Installation
+`npm install panoptes-subject-set-util --global` does the trick. The `--global` lets you run `ssutil` on the command line.
+
 ## Description
 The Subject Set Utility implements a CLI to 1) list subjects sets in a project, 2) create linked lists of subjects for sequential pagination, and 3) activate/deactivate subject sets (currently only supported by Old Weather)
 
