@@ -3,7 +3,7 @@ const api = require('panoptes-client');
 const handleLogin = require('./handle-login');
 
 exports.command = 'update-metadata';
-exports.describe = 'Updates subject set metadata by overwritting matching fields';
+exports.describe = 'updates subject set by overwritting metadata (destructive)';
 exports.builder = function (yargs) {
   return yargs
     .usage('Usage: $0 update-metadata --project [project_id] --subject-set [subject_set_id] --active [active_status] --shortName [ship_name]')
@@ -28,7 +28,6 @@ exports.builder = function (yargs) {
 
 exports.handler = function (argv) {
   let metadata = JSON.parse('{"metadata": ' + argv.params + '}');
-  // console.log('METADATA: ', metadata); // FOR DEBUGGING
   handleLogin(argv.prompt, function() {
     api.type('subject_sets').get({id: argv.subjectSet})
       .update(metadata)
