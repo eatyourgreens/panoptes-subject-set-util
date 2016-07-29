@@ -30,9 +30,9 @@ const argv   = require('yargs')
         })
         .help()
     })
-  .command('link-subjects', 'Creates a linked list among subjects in a set to support sequential pages', function (yargs) {
+  .command('link-pages', 'Creates a linked list among subjects in a set to support sequential pages', function (yargs) {
       return yargs
-        .usage('Usage: $0 link-subjects --project [project_id] --subject-set [subject_set_id]')
+        .usage('Usage: $0 link-pages --project [project_id] --subject-set [subject_set_id]')
         .option('project', {
           alias: 'p',
           demand: true,
@@ -62,66 +62,7 @@ const argv   = require('yargs')
   .wrap(null)
   .argv;
 
-console.log('NODE_ENV is \"%s\"', argv.env);
-
-// delete credentials from ENV when requesting prompt
-if(argv.prompt) {
-  delete process.env.PANOPTES_USERNAME;
-  delete process.env.PANOPTES_PASSWORD;
-}
-
-// skip prompt if credentials are found in ENV
-prompt.override = {
-  login: process.env.PANOPTES_USERNAME,
-  password: process.env.PANOPTES_PASSWORD
-};
-
-prompt.start();
-
-prompt.get({
-  properties: {
-    login: {
-      pattern: /^[a-zA-Z\s\-]+$/,
-      message: 'Name must be only letters, spaces, or dashes',
-      required: true
-    },
-    password: {
-      hidden: true
-    }
-  }
-}, function(error, result) {
-  if (error) {
-    console.log(error);
-  }
-
-  // set acquired credentials
-  let credentials = result;
-
-  auth.signIn(credentials).then(() => {
-
-    switch(argv._[0]) {
-
-      /* List subject sets available to active user */
-      case 'list':
-        list();
-        break;
-      /* Create linked list among subjects in subject set */
-      case 'link-subjects':
-        linkSubjects();
-        break;
-      /* Update subject set status */
-      case 'update-metadata':
-        updateMetadata();
-        break;
-
-      default:
-        console.log('Unknown command!');
-        break;
-    }
-
-  });
-
-});
+// console.log('NODE_ENV is \"%s\"', argv.env);
 
 function list() {
   let table = new cliTable({
@@ -143,7 +84,16 @@ function list() {
   });
 }
 
-function linkSubjects() {
+function updateMetadataHandler(params) {
+  console.log('updateMetadata()');
+  // let shortName = argv.shortName ? argv.shortName :  '';
+  // api.type('subject_sets').get({id: argv.subjectSet}).update({metadata:{active: argv.active, shortName: shortName}}).save()
+  //   .catch( function(err) {
+  //     console.log('ERROR: ', err);
+  //   })
+}
+
+function linkPages() {
   getAllSubjectsInSet(argv.subjectSet).then( function(subjects) {
     let updatedSubjects = addNextLinksToSubjectSet(subjects);
     if( updatedSubjects.length == 0 ) {
